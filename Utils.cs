@@ -35,8 +35,6 @@ namespace ConsoleApp1
         /// Размер сканирования по Y
         /// </summary>
         public static int ScanSizeY;
-
-        public static TextWriter ConsoleWriter = Console.Out;
         public static int prevLineX = 1;
 
         /// <summary>
@@ -51,7 +49,7 @@ namespace ConsoleApp1
             Console.CursorVisible = false;
         }
         
-        public static void InitGraph()
+        public static void Init()
         {
             StreamReader Reader = new StreamReader("Carcas.txt");
 
@@ -63,7 +61,9 @@ namespace ConsoleApp1
             Reader.Close();
         }
 
-
+        /// <summary>
+        /// Методы для отрисовки линий по вертикали и горизонтали
+        /// </summary>
         public static class LinePainter
         {
             public static class VerticalLines
@@ -126,6 +126,9 @@ namespace ConsoleApp1
 
         }
 
+        /// <summary>
+        /// Указатель положения антенны радара по вертикали
+        /// </summary>
         public static class RigthPanel
         {
             public static string Symb = "<";
@@ -145,46 +148,7 @@ namespace ConsoleApp1
 
                 prevRow = row;
             }
-
-            public static void Clear(int row)
-            {
-                Console.SetCursorPosition(PanelY, row);
-                Console.Write(Symb);
-            }
         }
-
-
-        private static int ActiveScanX = 4;
-        private static int ActiveScanY = 4;
-
-        public static void RadarScanCycle()
-        {
-            /**********************Проверки*********************/
-            if(ActiveScanX <= 1)
-            {
-                ActiveScanX = 2;
-            }
-
-            if(ActiveScanY <= 1)
-            {
-                ActiveScanY = 2;
-            }
-            
-            if(ActiveScanX == Console.WindowWidth - 1)
-            {
-                ActiveScanX = 2;
-            }
-
-            if (ActiveScanY == Console.WindowHeight - 1)
-            {
-                ActiveScanY = 2;
-            }
-
-            /**************РЕНДЕР*******************/
-            LinePainter.VerticalLines.VerticalClearLine(prevLineX);
-            LinePainter.VerticalLines.VerticalLineTo(ActiveScanX);
-
-            ActiveScanX++;
-        }
+        
     }
 }

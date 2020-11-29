@@ -12,56 +12,44 @@ namespace ConsoleApp1
         static async Task Main(string[] args)
         {
             Utils.ConsoleInit();
-            Utils.InitGraph();
+            Utils.Init();
             
-            for (int row = 1; row <= Utils.ScanSizeX; row++)
+            int Antenna_X_Pos = 1;
+            int Antenna_Y_Pos = 1;
+            int prev_Antenna_Y_Pos = 1;
+            bool ToRight = true;
+
+            Utils.RigthPanel.SetActive(Antenna_X_Pos);
+
+            while (true)
             {
-                Utils.RigthPanel.SetActive(row);
+                Utils.LinePainter.VerticalLines.VerticalClearLine(prev_Antenna_Y_Pos);
+                Utils.LinePainter.VerticalLines.VerticalLineTo(Antenna_Y_Pos);
 
-                int coll = 1;
-                bool ToRight = true;
-                int prevLine = 1;
+                Thread.Sleep(3);
 
-                while(true)
+                prev_Antenna_Y_Pos = Antenna_Y_Pos;
+
+                if (ToRight)
                 {
-                    Utils.LinePainter.VerticalLines.VerticalClearLine(prevLine);                    
-                    Utils.LinePainter.VerticalLines.VerticalLineTo(coll);
-                    
-                    Thread.Sleep(3);
-
-                    prevLine = coll;
-
-                    if (ToRight)
-                    {
-                        coll++;
-                    }
-                    else
-                    {
-                        coll--;
-                    }
-
-                    if(coll == Utils.ScanSizeY - 1)
-                    {
-                        ToRight = false;
-                    }
-                    else if(coll == 1)
-                    {                        
-                        ToRight = true;
-                    }
+                    Antenna_Y_Pos++;
                 }
+                else
+                {
+                    Antenna_Y_Pos--;
+                }
+
+                if (Antenna_Y_Pos == Utils.ScanSizeY - 1)
+                {
+                    ToRight = false;
+                }
+                else if (Antenna_Y_Pos == 1)
+                {
+                    Utils.RigthPanel.SetActive(Antenna_X_Pos++);
+                    ToRight = true;
+                }
+
             }
-
-
-            /*
-            for(int a = 0; a < 3000; a++)
-            {
-                Utils.RadarScanCycle();
-                Thread.Sleep(7);
-            }*/
-
-
-
-
 
             await Task.Delay(-1);
         }
